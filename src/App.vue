@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <article v-for="quote in quotes" class="message">
+      <div class="message-header">
+        <p>Perceval</p>
+        <button class="delete" aria-label="delete"></button>
+      </div>
+      <div class="message-body">{{ quote.citation }}</div>
+    </article>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from "axios";
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  name: "app",
+  components: {},
+  data() {
+    return {
+      quotes: null
+    };
+  },
+  created() {
+    axios
+      .get(
+        `${"https://cors-anywhere.herokuapp.com/"}https://kaamelott.chaudie.re/api/all/livre/1/personnage/Perceval`
+      )
+      .then(response => (this.quotes = response.data.citation));
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.message {
+  margin: 20px 100px 20px 100px;
 }
 </style>
